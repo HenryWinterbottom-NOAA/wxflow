@@ -8,29 +8,35 @@
 
 import copy
 
+from types import SimpleNamespace
+from typing import Dict, Tuple
+
 __all__ = ['AttrDict']
 
 
-class AttrDict(dict):
+class AttrDict(Dict):
 
-    def __init__(__self, *args, **kwargs):
-        object.__setattr__(__self, '__parent', kwargs.pop('__parent', None))
-        object.__setattr__(__self, '__key', kwargs.pop('__key', None))
-        object.__setattr__(__self, '__frozen', False)
+    def __init__(self: Dict, *args: Tuple, **kwargs: Dict):
+        object.__setattr__(self, '__parent', kwargs.pop('__parent', None))
+        object.__setattr__(self, '__key', kwargs.pop('__key', None))
+        object.__setattr__(self, '__frozen', False)
         for arg in args:
             if not arg:
                 continue
             elif isinstance(arg, dict):
                 for key, val in arg.items():
-                    __self[key] = __self._hook(val)
+                    self[key] = self._hook(val)
             elif isinstance(arg, tuple) and (not isinstance(arg[0], tuple)):
-                __self[arg[0]] = __self._hook(arg[1])
+                self[arg[0]] = self._hook(arg[1])
             else:
                 for key, val in iter(arg):
-                    __self[key] = __self._hook(val)
+                    self[key] = self._hook(val)
 
         for key, val in kwargs.items():
-            __self[key] = __self._hook(val)
+            self[key] = self._hook(val)
+
+        print(' am here')
+        print(self)
 
     def __setattr__(self, name, value):
         if hasattr(self.__class__, name):
