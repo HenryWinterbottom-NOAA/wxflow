@@ -1,8 +1,9 @@
 import os
-import pytest
 from datetime import datetime
 
-from wxflow.configuration import Configuration, cast_as_dtype
+import pytest
+
+from wxflow import Configuration, cast_as_dtype
 
 file0 = """#!/bin/bash
 export SOME_ENVVAR1="${USER}"
